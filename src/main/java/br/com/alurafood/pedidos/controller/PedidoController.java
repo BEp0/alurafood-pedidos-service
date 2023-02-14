@@ -6,6 +6,7 @@ import br.com.alurafood.pedidos.service.PedidoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,11 @@ public class PedidoController {
 
     private final PedidoService pedidoService;
 
+    @GetMapping("/porta")
+    public String obterPorta(@Value("${server.port}") String porta){
+        return String.format("Porta: %s", porta);
+    }
+
     @GetMapping
     public List<PedidoDto> listarTodos() {
         return pedidoService.obterTodos();
@@ -38,7 +44,7 @@ public class PedidoController {
         return ResponseEntity.ok(dto);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<PedidoDto> realizaPedido(@RequestBody @Valid PedidoDto dto, UriComponentsBuilder uriBuilder) {
 
         PedidoDto pedidoRealizado = pedidoService.criarPedido(dto);
